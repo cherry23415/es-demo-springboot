@@ -4,6 +4,7 @@ package com.ying.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ying.constant.SearchConstant;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 
@@ -14,6 +15,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Document(indexName = SearchConstant.INDEX_NAME, type = SearchConstant.TYPE_TASK_INFO)
 public class TaskInfo {
 
+    @Id
     @JsonProperty
     private Long taskId;
 
@@ -21,20 +23,8 @@ public class TaskInfo {
     private Integer userId;
 
     @JsonProperty
+    private String taskTitle;
+
+    @JsonProperty
     private String taskContent;
-
-    @JsonProperty
-    private String taskArea;
-
-    @JsonProperty
-    private String taskTags;
-
-    @JsonProperty
-    private Integer taskState;
-
-    @JsonProperty
-    private String updateTime;
-
-    @JsonProperty
-    private String userNickName;
 }
