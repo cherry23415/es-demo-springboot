@@ -46,4 +46,9 @@ public class TaskInfoController {
         Iterable<TaskInfo> listIt = taskInfoRepository.search(queryBuilder, pageable);
         return new BaseRespDto(BaseResultEnum.SUCCESS, listIt);
     }
+
+    @GetMapping("find")
+    public BaseRespDto findById(Long id) {
+        return new BaseRespDto(BaseResultEnum.SUCCESS, taskInfoRepository.findById(id));
+    }
 }

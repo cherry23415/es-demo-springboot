@@ -6,6 +6,7 @@ import com.ying.constant.SearchConstant;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
 
 
 /**
@@ -16,15 +17,13 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class TaskInfo {
 
     @Id
-    @JsonProperty
     private Long taskId;
 
-    @JsonProperty
     private Integer userId;
 
-    @JsonProperty
+    @Field(searchAnalyzer = "ik_max_word",analyzer = "ik_smart")
     private String taskTitle;
 
-    @JsonProperty
+    @Field(searchAnalyzer = "ik_max_word",analyzer = "ik_smart")
     private String taskContent;
 }
