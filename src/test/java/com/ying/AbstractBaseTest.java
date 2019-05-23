@@ -1,8 +1,8 @@
 package com.ying;
 
 import com.google.common.collect.Maps;
-import com.ying.model.TaskInfo;
-import com.ying.repository.TaskInfoRepository;
+import com.ying.model.Notice;
+import com.ying.repository.NoticeRepository;
 import com.ying.resp.BaseRespDto;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class AbstractBaseTest {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Autowired
-    private TaskInfoRepository taskInfoRepository;
+    private NoticeRepository noticeRepository;
 
     @Test
     public void testIndex() throws Exception {
@@ -45,19 +45,18 @@ public class AbstractBaseTest {
     @Test
     public void testQuery() throws Exception {
         SearchQuery searchQuery = new NativeSearchQuery(QueryBuilders.matchAllQuery());
-        List<TaskInfo> taskInfos = elasticsearchTemplate.queryForList(searchQuery, TaskInfo.class);
-        System.out.println(taskInfos);
+        List<Notice> notices = elasticsearchTemplate.queryForList(searchQuery, Notice.class);
+        System.out.println(notices);
     }
 
     @Test
     public void testSave() throws Exception {
-        TaskInfo t = new TaskInfo();
+        Notice t = new Notice();
         t.setId(Long.valueOf(2));
-        t.setUserId(Long.valueOf(1));
-        t.setTaskTitle("测试下哈哈哈哈什么啊");
-        t.setTaskContent("哈哈发测试发斯蒂芬");
-        t.setTaskCategory("分类1");
-        taskInfoRepository.save(t);
+        t.setTitle("测试下哈哈哈哈什么啊");
+        t.setContext("哈哈发测试发斯蒂芬");
+        t.setCategory("分类1");
+        noticeRepository.save(t);
     }
 }
 
