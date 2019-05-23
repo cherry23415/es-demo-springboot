@@ -1,12 +1,12 @@
 package com.ying.model;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ying.constant.SearchConstant;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 
 /**
@@ -17,13 +17,17 @@ import org.springframework.data.elasticsearch.annotations.Field;
 public class TaskInfo {
 
     @Id
-    private Long taskId;
+    private Long id;
 
-    private Integer userId;
+    @Field(type = FieldType.Long)
+    private Long userId;
 
-    @Field(searchAnalyzer = "ik_max_word",analyzer = "ik_smart")
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String taskTitle;
 
-    @Field(searchAnalyzer = "ik_max_word",analyzer = "ik_smart")
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String taskContent;
+
+    @Field(type = FieldType.Keyword)
+    private String taskCategory;
 }

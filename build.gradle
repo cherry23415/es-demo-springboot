@@ -9,7 +9,7 @@ apply plugin: 'io.spring.dependency-management'
 sourceCompatibility = 1.8
 buildscript {
     ext {
-        springbootVersion = "2.0.0.RELEASE"
+        springbootVersion = "2.1.5.RELEASE"
     }
     repositories {
         mavenCentral()
@@ -32,6 +32,6 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-log4j2')
     testCompile("org.springframework.boot:spring-boot-starter-test")
     compile "org.projectlombok:lombok"
-//    compile "com.google.guava:guava:23.0"
-    compile('org.springframework.boot:spring-boot-starter-data-elasticsearch:2.1.5.RELEASE')
+    compile "com.google.guava:guava:23.0"
+    compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
 }
