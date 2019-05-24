@@ -12,7 +12,7 @@ public interface INoticeService {
 
     Notice save(Notice notice);
 
-    void delete(Notice notice);
+    void deleteById(long id);
 
     List<Notice> findAll();
 

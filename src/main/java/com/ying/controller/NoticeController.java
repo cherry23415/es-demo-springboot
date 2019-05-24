@@ -31,12 +31,12 @@ public class NoticeController {
     }
 
     /**
-     * @param query 标题或内容搜索
+     * @param query 标题
      */
     @GetMapping("search")
     public BaseRespDto search(String query, int page, int size) {
         if (page <= 0) {
-            page = 1;
+            page = 0;
         }
         if (size <= 0) {
             size = 10;
@@ -54,5 +54,11 @@ public class NoticeController {
     @GetMapping("all")
     public BaseRespDto getAll() {
         return new BaseRespDto(BaseResultEnum.SUCCESS, noticeService.findAll());
+    }
+
+    @GetMapping("delById")
+    public BaseRespDto delById(long id) {
+        noticeService.deleteById(id);
+        return new BaseRespDto(BaseResultEnum.SUCCESS);
     }
 }

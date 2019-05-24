@@ -32,8 +32,8 @@ public class NoticeServiceImpl implements INoticeService {
     }
 
     @Override
-    public void delete(Notice notice) {
-        noticeRepository.delete(notice);
+    public void deleteById(long id) {
+        noticeRepository.deleteById(id);
     }
 
     @Override
