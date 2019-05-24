@@ -3,10 +3,15 @@ package com.ying.service.impl;
 import com.google.common.collect.Lists;
 import com.ying.model.Notice;
 import com.ying.repository.NoticeRepository;
+import com.ying.resp.ListResultDto;
 import com.ying.service.INoticeService;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,18 +46,48 @@ public class NoticeServiceImpl implements INoticeService {
         return Lists.newArrayList(noticeRepository.findAll());
     }
 
-    @Override
-    public Page<Notice> findByContext(String context, Pageable pageable) {
-        return noticeRepository.findByContext(context, pageable);
+    private ListResultDto<Notice> pageToList(Page<Notice> notices) {
+        ListResultDto<Notice> listResultDto = new ListResultDto<>();
+        listResultDto.setDatas(Lists.newArrayList(notices));
+        listResultDto.setCount(notices.getTotalElements());
+        listResultDto.setPage(notices.getNumber());
+        listResultDto.setSize(notices.getSize());
+        return listResultDto;
     }
 
     @Override
-    public Page<Notice> findByTitle(String title, Pageable pageable) {
-        return noticeRepository.findByTitle(title, pageable);
+    public ListResultDto<Notice> findByContext(String context, Pageable pageable) {
+        return pageToList(noticeRepository.findByContext(context, pageable));
     }
 
     @Override
-    public Page<Notice> findByTitleLikeOrContextLike(String context, String title, Pageable pageable) {
-        return noticeRepository.findByTitleLikeOrContextLike(context, title, pageable);
+    public ListResultDto<Notice> findByTitle(String title, Pageable pageable) {
+        return pageToList(noticeRepository.findByTitle(title, pageable));
+    }
+
+    @Override
+    public ListResultDto<Notice> findByTitleLikeOrContextLike(String context, String title, int page, int size) {
+        if (page <= 0) {
+            page = 0;
+        }
+        if (size <= 0) {
+            size = 10;
+        }
+        Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "id"));
+        Page<Notice> notices = noticeRepository.findByTitleLikeOrContextLike(context, title, pageable);
+        return pageToList(notices);
+    }
+
+    @Override
+    public ListResultDto<Notice> query(String query, int page, int size) {
+        if (page <= 0) {
+            page = 0;
+        }
+        if (size <= 0) {
+            size = 10;
+        }
+        Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "id"));
+        QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(query, "title", "context");
+        return pageToList(noticeRepository.search(queryBuilder, pageable));
     }
 }

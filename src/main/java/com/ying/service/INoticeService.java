@@ -1,6 +1,7 @@
 package com.ying.service;
 
 import com.ying.model.Notice;
+import com.ying.resp.ListResultDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,9 +17,11 @@ public interface INoticeService {
 
     List<Notice> findAll();
 
-    Page<Notice> findByContext(String context, Pageable pageable);
+    ListResultDto<Notice> findByContext(String context, Pageable pageable);
 
-    Page<Notice> findByTitle(String title, Pageable pageable);
+    ListResultDto<Notice> findByTitle(String title, Pageable pageable);
 
-    Page<Notice> findByTitleLikeOrContextLike(String context, String title, Pageable pageable);
+    ListResultDto<Notice> findByTitleLikeOrContextLike(String context, String title, int page, int size);
+
+    ListResultDto<Notice> query(String query, int page, int size);
 }
