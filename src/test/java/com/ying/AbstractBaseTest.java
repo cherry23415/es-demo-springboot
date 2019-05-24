@@ -34,7 +34,7 @@ public class AbstractBaseTest {
 
     @Test
     public void testIndex() throws Exception {
-        ResponseEntity<BaseRespDto> re = restTemplate.getForEntity("/notice/search?query=测试&page=0&size=0", BaseRespDto.class);
+        ResponseEntity<BaseRespDto> re = restTemplate.getForEntity("/notice/query?query=测试&page=0&size=0", BaseRespDto.class);
         System.out.println(re.getBody().getData());
     }
 

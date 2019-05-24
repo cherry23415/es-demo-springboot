@@ -50,4 +50,9 @@ public class NoticeServiceImpl implements INoticeService {
     public Page<Notice> findByTitle(String title, Pageable pageable) {
         return noticeRepository.findByTitle(title, pageable);
     }
+
+    @Override
+    public Page<Notice> findByTitleLikeOrContextLike(String context, String title, Pageable pageable) {
+        return noticeRepository.findByTitleLikeOrContextLike(context, title, pageable);
+    }
 }

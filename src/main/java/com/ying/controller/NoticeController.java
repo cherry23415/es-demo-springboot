@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.ying.constant.BaseResultEnum;
 import com.ying.model.Notice;
 import com.ying.resp.BaseRespDto;
+import com.ying.resp.ListResultDto;
 import com.ying.service.INoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class NoticeController {
     }
 
     /**
-     * @param query 标题
+     * @param query 全文搜索
      */
     @GetMapping("search")
     public BaseRespDto search(String query, int page, int size) {
@@ -42,8 +43,13 @@ public class NoticeController {
             size = 10;
         }
         Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "id"));
-        Page<Notice> notices1 = noticeService.findByTitle(query, pageable);
-        return new BaseRespDto(BaseResultEnum.SUCCESS, Lists.newArrayList(notices1));
+        Page<Notice> notices1 = noticeService.findByTitleLikeOrContextLike(query, query, pageable);
+        ListResultDto<Notice> n = new ListResultDto<>();
+        n.setDatas(Lists.newArrayList(notices1));
+        n.setCount(notices1.getTotalElements());
+        n.setPage(page);
+        n.setSize(size);
+        return new BaseRespDto(BaseResultEnum.SUCCESS, n);
     }
 
     @GetMapping("findById")

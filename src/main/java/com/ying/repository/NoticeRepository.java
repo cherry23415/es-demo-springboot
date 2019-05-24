@@ -14,4 +14,7 @@ public interface NoticeRepository extends ElasticsearchRepository<Notice, Long> 
     Page<Notice> findByContext(String context, Pageable pageable);
 
     Page<Notice> findByTitle(String title, Pageable pageable);
+
+    Page<Notice> findByTitleLikeOrContextLike(String context, String title, Pageable pageable);
+
 }
