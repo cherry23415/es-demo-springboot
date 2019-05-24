@@ -8,7 +8,8 @@ import com.ying.service.INoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,34 +18,41 @@ import org.springframework.web.bind.annotation.*;
  * @author lyz
  */
 @RestController
-@RequestMapping("/taskInfo")
+@RequestMapping("/notice")
 public class NoticeController {
 
     @Autowired
-    private INoticeService taskInfoService;
+    private INoticeService noticeService;
 
     @PostMapping("save")
     public BaseRespDto save(@RequestBody Notice notice) {
-        Notice t = taskInfoService.save(notice);
+        Notice t = noticeService.save(notice);
         return new BaseRespDto(BaseResultEnum.SUCCESS, t);
     }
 
     /**
-     * @param taskTitle 搜索标题
+     * @param query 标题或内容搜索
      */
     @GetMapping("search")
-    public BaseRespDto search(@RequestParam("taskTitle") String taskTitle, @PageableDefault PageRequest pageRequest) {
-        Page<Notice> taskInfos = taskInfoService.findByTitle(taskTitle, pageRequest);
-        return new BaseRespDto(BaseResultEnum.SUCCESS, Lists.newArrayList(taskInfos));
+    public BaseRespDto search(String query, int page, int size) {
+        if (page <= 0) {
+            page = 1;
+        }
+        if (size <= 0) {
+            size = 10;
+        }
+        Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "id"));
+        Page<Notice> notices1 = noticeService.findByTitle(query, pageable);
+        return new BaseRespDto(BaseResultEnum.SUCCESS, Lists.newArrayList(notices1));
     }
 
     @GetMapping("findById")
     public BaseRespDto findById(long id) {
-        return new BaseRespDto(BaseResultEnum.SUCCESS, taskInfoService.findById(id));
+        return new BaseRespDto(BaseResultEnum.SUCCESS, noticeService.findById(id));
     }
 
     @GetMapping("all")
     public BaseRespDto getAll() {
-        return new BaseRespDto(BaseResultEnum.SUCCESS, taskInfoService.findAll());
+        return new BaseRespDto(BaseResultEnum.SUCCESS, noticeService.findAll());
     }
 }

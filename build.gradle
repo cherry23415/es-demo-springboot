@@ -2,7 +2,6 @@ group 'es-demo-springboot'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
-apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -31,7 +30,11 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-log4j2'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    compile 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
     compile 'org.projectlombok:lombok'
     compile 'com.google.guava:guava:23.0'
-    compile 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    compile 'org.aspectj:aspectjweaver:1.8.9'
+    //json
+    compile 'com.alibaba:fastjson:1.2.9'
+
 }

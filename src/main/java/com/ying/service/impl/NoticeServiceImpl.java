@@ -1,11 +1,12 @@
 package com.ying.service.impl;
 
+import com.google.common.collect.Lists;
 import com.ying.model.Notice;
 import com.ying.repository.NoticeRepository;
 import com.ying.service.INoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,16 +38,16 @@ public class NoticeServiceImpl implements INoticeService {
 
     @Override
     public List<Notice> findAll() {
-        return (List<Notice>) noticeRepository.findAll();
+        return Lists.newArrayList(noticeRepository.findAll());
     }
 
     @Override
-    public Page<Notice> findByContext(String context, PageRequest pageRequest) {
-        return noticeRepository.findByContext(context, pageRequest);
+    public Page<Notice> findByContext(String context, Pageable pageable) {
+        return noticeRepository.findByContext(context, pageable);
     }
 
     @Override
-    public Page<Notice> findByTitle(String title, PageRequest pageRequest) {
-        return noticeRepository.findByTitle(title, pageRequest);
+    public Page<Notice> findByTitle(String title, Pageable pageable) {
+        return noticeRepository.findByTitle(title, pageable);
     }
 }

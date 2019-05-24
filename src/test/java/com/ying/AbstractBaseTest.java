@@ -1,6 +1,5 @@
 package com.ying;
 
-import com.google.common.collect.Maps;
 import com.ying.model.Notice;
 import com.ying.repository.NoticeRepository;
 import com.ying.resp.BaseRespDto;
@@ -17,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author lyz
@@ -36,9 +35,7 @@ public class AbstractBaseTest {
 
     @Test
     public void testIndex() throws Exception {
-        Map map = Maps.newHashMap();
-        map.put("taskTitle", "测试");
-        ResponseEntity<BaseRespDto> re = restTemplate.getForEntity("/taskInfo/search", BaseRespDto.class, map);
+        ResponseEntity<BaseRespDto> re = restTemplate.getForEntity("/notice/search?query=测试&page=0&size=0", BaseRespDto.class);
         System.out.println(re.getBody().getData());
     }
 
@@ -52,11 +49,12 @@ public class AbstractBaseTest {
     @Test
     public void testSave() throws Exception {
         Notice t = new Notice();
-        t.setId(Long.valueOf(2));
+        t.setId(Long.valueOf(1));
         t.setTitle("测试下哈哈哈哈什么啊");
         t.setContext("哈哈发测试发斯蒂芬");
         t.setCategory("分类1");
         noticeRepository.save(t);
     }
+
 }
 
