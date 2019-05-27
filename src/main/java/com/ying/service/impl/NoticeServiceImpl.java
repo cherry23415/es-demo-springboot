@@ -11,9 +11,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -67,50 +65,19 @@ public class NoticeServiceImpl implements INoticeService {
     }
 
     @Override
-    public ListResultDto<Notice> findByContext(String context, Pageable pageable) {
-        return pageToList(noticeRepository.findByContext(context, pageable));
-    }
-
-    @Override
-    public ListResultDto<Notice> findByTitle(String title, Pageable pageable) {
-        return pageToList(noticeRepository.findByTitle(title, pageable));
-    }
-
-    @Override
-    public ListResultDto<Notice> findByTitleLikeOrContextLike(String context, String title, int page, int size) {
-        if (page <= 0) {
-            page = 0;
-        }
-        if (size <= 0) {
-            size = 10;
-        }
-        Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "id"));
+    public ListResultDto<Notice> findByTitleLikeOrContextLike(String context, String title, Pageable pageable) {
         Page<Notice> notices = noticeRepository.findByTitleLikeOrContextLike(context, title, pageable);
         return pageToList(notices);
     }
 
     @Override
-    public ListResultDto<Notice> query(String query, int page, int size) {
-        if (page <= 0) {
-            page = 0;
-        }
-        if (size <= 0) {
-            size = 10;
-        }
-        Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "id"));
+    public ListResultDto<Notice> query(String query, Pageable pageable) {
         QueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(query, "title", "context");
         return pageToList(noticeRepository.search(queryBuilder, pageable));
     }
 
     @Override
-    public ListResultDto<Notice> queryHigh(String query, int page, int size) {
-        if (page <= 0) {
-            page = 0;
-        }
-        if (size <= 0) {
-            size = 10;
-        }
-        Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "id"));
+    public ListResultDto<Notice> queryHigh(String query, Pageable pageable) {
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilders.multiMatchQuery(query, "title", "context"))
                 .withHighlightFields(new HighlightBuilder.Field("*").preTags("<span style=\"color:red\">").postTags("</span>"))
