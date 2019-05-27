@@ -36,5 +36,6 @@ dependencies {
     compile 'org.aspectj:aspectjweaver:1.8.9'
     //json
     compile 'com.alibaba:fastjson:1.2.9'
+    compile 'commons-beanutils:commons-beanutils:1.9.3'
 
 }

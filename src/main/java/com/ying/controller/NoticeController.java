@@ -26,20 +26,27 @@ public class NoticeController {
     }
 
     /**
-     * @param query 全文搜索
+     * @param query 根据内容或标题搜索（不支持带空格的搜索）
      */
-    @GetMapping("search")
-    public BaseRespDto search(String query, int page, int size) {
+    @GetMapping("query")
+    public BaseRespDto query(String query, int page, int size) {
         return new BaseRespDto(BaseResultEnum.SUCCESS, noticeService.findByTitleLikeOrContextLike(query, query, page, size));
     }
 
+    /**
+     * @param query 全文搜索（支持带空格搜索，空格搜索时前端转成%20）
+     */
+    @GetMapping("search")
+    public BaseRespDto search(String query, int page, int size) {
+        return new BaseRespDto(BaseResultEnum.SUCCESS, noticeService.query(query, page, size));
+    }
 
     /**
-     * @param query 全文搜索
+     * @param query 全文搜索（支持带空格搜索，空格搜索时前端转成%20，高亮显示搜索关键字）
      */
-    @GetMapping("search2")
-    public BaseRespDto search2(String query, int page, int size) {
-        return new BaseRespDto(BaseResultEnum.SUCCESS, noticeService.query(query, page, size));
+    @GetMapping("searchHigh")
+    public BaseRespDto searchHigh(String query, int page, int size) {
+        return new BaseRespDto(BaseResultEnum.SUCCESS, noticeService.queryHigh(query, page, size));
     }
 
     @GetMapping("findById")

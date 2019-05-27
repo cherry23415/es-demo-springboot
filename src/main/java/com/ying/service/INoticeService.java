@@ -24,4 +24,6 @@ public interface INoticeService {
     ListResultDto<Notice> findByTitleLikeOrContextLike(String context, String title, int page, int size);
 
     ListResultDto<Notice> query(String query, int page, int size);
+
+    ListResultDto<Notice> queryHigh(String query, int page, int size);
 }
