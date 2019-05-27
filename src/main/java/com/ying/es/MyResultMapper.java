@@ -9,6 +9,7 @@ import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.document.DocumentField;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.data.domain.Pageable;
@@ -127,12 +128,20 @@ public class MyResultMapper extends AbstractResultMapper {
         //增加高亮内容返回
         for (HighlightField field : hit.getHighlightFields().values()) {
             try {
-                PropertyUtils.setProperty(result, field.getName(), Arrays.toString(field.getFragments()));
+                PropertyUtils.setProperty(result, field.getName(), textArr2Str(field.getFragments()));
             } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
                 throw new ElasticsearchException("failed to set highlighted field: " + field.getName()
                         + " with value: " + Arrays.toString(field.getFragments()), e);
             }
         }
+    }
+
+    private String textArr2Str(Text[] texts) {
+        StringBuffer sb = new StringBuffer();
+        for (Text t : texts) {
+            sb.append(t.string());
+        }
+        return sb.toString();
     }
 
     private <T> T mapEntity(Collection<DocumentField> values, Class<T> clazz) {
