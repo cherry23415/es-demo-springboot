@@ -3,7 +3,51 @@ package com.ying;
 public class Test {
 
     public static void main(String[] args) {
-        f1(" aa aera aaoooooooa a a a aa aa a aaaasrrss");
+//        f1(" aa aera aaoooooooa a a a aa aa a aaaasrrss");
+        ListNode l1 = new ListNode(1);
+        ListNode l2 = new ListNode(2);
+        ListNode l3 = new ListNode(3);
+        ListNode l4 = new ListNode(4);
+        ListNode l5 = new ListNode(5);
+        l1.next = l2;
+        l2.next = l3;
+        l3.next = l4;
+        l4.next = l5;
+        ListNode n = reverseList(l1);
+        System.out.println(n);
+    }
+
+    public static ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
+    }
+
+    public static ListNode reverseList(ListNode head, int m, int n) {
+        if (head == null) {
+            return null;
+        }
+        if (head.next == null) {
+            return head;
+        }
+        if (m == n) {
+            return head;
+        }
+        ListNode prev = null;
+        ListNode curr = head;
+        for (int i = m; i <= n; i++) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
     }
 
     static void f1(String str) {
